@@ -10,7 +10,7 @@ import (
 
 var IAccountService AccountService
 
-// 用于对外暴露的应用服务，唯一的暴露点
+// 用于对外暴露资金账户应用服务 唯一的暴露点
 func GetAccountService() AccountService {
 	base.Check(IAccountService)
 	return IAccountService

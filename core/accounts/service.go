@@ -13,10 +13,13 @@ import (
 
 var _ services.AccountService = new(accountService)
 
-var one sync.Once
+// 避免多次实例化 保证 accountService 只被实例化1次
+var once sync.Once
 
+// 只要导入 该包 就保证 accountService 被实例化
 func init() {
-	one.Do(func() {
+	once.Do(func() {
+		// 无论该匿名函数被调用多少次 函数代码只会被执行1次
 		services.IAccountService = new(accountService)
 	})
 }
