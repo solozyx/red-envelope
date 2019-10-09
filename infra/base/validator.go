@@ -54,7 +54,7 @@ func ValidateStruct(s interface{}) error {
 	if err != nil {
 		_, ok := err.(*validator.InvalidValidationError)
 		if ok {
-			logrus.Error("账户创建验证错误", err)
+			logrus.Error("用户输入参数验证错误", err)
 		}
 		errs, ok := err.(validator.ValidationErrors)
 		if ok {

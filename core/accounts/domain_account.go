@@ -132,15 +132,16 @@ func (domain *accountDomain) GetAccountByUserIdAndType(userId string, aType serv
 // 领域对象 转账业务
 func (domain *accountDomain) Transfer(dto services.AccountTransferDTO) (status services.TransferredStatus, err error) {
 	err = base.Tx(func(runner *dbx.TxRunner) error {
+		// 把 *dbx.TxRunner 事务对象绑定到 context.Background() 上下文对象中
 		ctx := base.WithValueContext(context.Background(), runner)
-		status, err = domain.transferWithContextTx(ctx, dto)
+		status, err = domain.TransferWithContextTx(ctx, dto)
 		return err
 	})
 	return status, err
 }
 
-// 必须在 base.TX 事务块里面运行 不能单独运行
-func (domain *accountDomain) transferWithContextTx(ctx context.Context, dto services.AccountTransferDTO) (status services.TransferredStatus, err error) {
+// TODO:NOTICE 必须在 base.TX 事务块里面运行 不能单独运行
+func (domain *accountDomain) TransferWithContextTx(ctx context.Context, dto services.AccountTransferDTO) (status services.TransferredStatus, err error) {
 	// 如果交易变化是支出类型 修正amount为负值
 	var amount = dto.Amount
 	if dto.ChangeFlag == services.FlagTransferOut {
