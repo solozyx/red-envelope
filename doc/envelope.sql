@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `red_envelope_item`;
 CREATE TABLE `red_envelope_item`
 (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-    `item_no` bigint(20) not null comment '红包订单详情编号',
+    `item_no` varchar(32) not null comment '红包订单详情编号',
     `envelope_no` varchar(32) not null comment '红包编号',
     `recv_user_id` varchar(40) not null comment '红包接受者用户编号',
     `recv_username` varchar(64) default '' not null comment '红包接受者用户名称',

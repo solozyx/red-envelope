@@ -115,7 +115,7 @@ type RedEnvelopeGoodsDTO struct {
 
 // 红包详情
 type RedEnvelopeItemDTO struct {
-	ItemNo       int64           `json:"itemNo"`       // 红包订单详情编号
+	ItemNo       string          `json:"itemNo"`       // 红包订单详情编号
 	EnvelopeNo   string          `json:"envelopeNo"`   // 红包编号
 	RecvUsername string          `json:"recvUsername"` // 接收者用户名
 	RecvUserId   string          `json:"recvUserId"`   // 接收者用户id
@@ -130,16 +130,16 @@ type RedEnvelopeItemDTO struct {
 	IsLuckiest   bool            `json:"isLuckiest"` // 是否是最幸运的
 }
 
-func (item *RedEnvelopeItemDTO) CopyTo(target *RedEnvelopeItemDTO) {
-	target.ItemNo = item.ItemNo
-	target.EnvelopeNo = item.EnvelopeNo
-	target.RecvUsername = item.RecvUsername
-	target.RecvUserId = item.RecvUserId
-	target.Amount = item.Amount
-	target.Quantity = item.Quantity
-	target.RemainAmount = item.RemainAmount
-	target.AccountNo = item.AccountNo
-	target.PayStatus = item.PayStatus
-	target.CreatedAt = item.CreatedAt
-	target.UpdatedAt = item.UpdatedAt
+func (this *RedEnvelopeItemDTO) CopyTo(target *RedEnvelopeItemDTO) {
+	target.ItemNo = this.ItemNo
+	target.EnvelopeNo = this.EnvelopeNo
+	target.RecvUsername = this.RecvUsername
+	target.RecvUserId = this.RecvUserId
+	target.Amount = this.Amount
+	target.Quantity = this.Quantity
+	target.RemainAmount = this.RemainAmount
+	target.AccountNo = this.AccountNo
+	target.PayStatus = this.PayStatus
+	target.CreatedAt = this.CreatedAt
+	target.UpdatedAt = this.UpdatedAt
 }

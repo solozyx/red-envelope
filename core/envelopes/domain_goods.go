@@ -15,7 +15,7 @@ import (
 
 type goodsDomain struct {
 	RedEnvelopeGoods
-	item itemDomain
+	itemDomain
 }
 
 // 生成1个红包编号
@@ -66,7 +66,7 @@ func (domain *goodsDomain) CreateAndSave(ctx context.Context, dto services.RedEn
 // 查询红包商品信息
 func (domain *goodsDomain) Get(envelopeNo string) (goods *RedEnvelopeGoods) {
 	err := base.Tx(func(runner *dbx.TxRunner) error {
-		dao := &RedEnvelopeDao{runner: runner}
+		dao := &RedEnvelopeGoodsDao{runner: runner}
 		goods = dao.GetOne(envelopeNo)
 		return nil
 	})
