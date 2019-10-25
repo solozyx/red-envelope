@@ -94,7 +94,7 @@ type AccountTransferDTO struct {
 	// 交易对方
 	TradeTarget TradeParticipator `validate:"required" json:"tradeTarget"`
 	// 交易金额
-	AmountStr string          `validate:"required,numeric" json:"amountStr"`
+	AmountStr string          `validate:"required" json:"amountStr"`
 	Amount    decimal.Decimal ``
 	// 转账变化类型
 	ChangeType ChangeType `validate:"required,numeric" json:"changeType"`
