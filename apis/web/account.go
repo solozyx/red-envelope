@@ -22,6 +22,7 @@ func (a *AccountApi) Init() {
 	groupRouter := base.Iris().Party("/v1/account")
 	groupRouter.Post("/create", createHandler)
 	groupRouter.Post("/transfer", transferHandler)
+	groupRouter.Post("/recharge", rechargeHandler)
 	groupRouter.Get("/envelope/get", getEnvelopeAccountHandler)
 	groupRouter.Get("/get", getAccountHandler)
 }
@@ -55,7 +56,7 @@ func createHandler(ctx iris.Context) {
 // 转账接口 /v1/account/transfer
 func transferHandler(ctx iris.Context) {
 	account := services.AccountTransferDTO{}
-	err := ctx.ReadJSON(account)
+	err := ctx.ReadJSON(&account)
 	r := base.Res{
 		Code: base.ResCodeOk,
 	}
@@ -68,6 +69,34 @@ func transferHandler(ctx iris.Context) {
 	// 转账
 	service := services.GetAccountService()
 	status, err := service.Transfer(account)
+	if err != nil {
+		r.Code = base.ResCodeInternalServerErr
+		r.Message = err.Error()
+	}
+	r.Data = status
+	if status != services.TransferredStatusSuccess {
+		r.Code = base.ResCodeBizTransferredFailure
+		r.Message = err.Error()
+	}
+	ctx.JSON(&r)
+}
+
+// 账户充值
+func rechargeHandler(ctx iris.Context) {
+	account := services.AccountTransferDTO{}
+	err := ctx.ReadJSON(&account)
+	r := base.Res{
+		Code: base.ResCodeOk,
+	}
+	if err != nil {
+		r.Code = base.ResCodeRequestParamsErr
+		r.Message = err.Error()
+		ctx.JSON(&r)
+		return
+	}
+	// 转账
+	service := services.GetAccountService()
+	status, err := service.StoreValue(account)
 	if err != nil {
 		r.Code = base.ResCodeInternalServerErr
 		r.Message = err.Error()
