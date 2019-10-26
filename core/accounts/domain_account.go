@@ -148,10 +148,6 @@ func (domain *accountDomain) TransferWithContextTx(ctx context.Context, dto serv
 		amount = amount.Mul(decimal.NewFromFloat(-1))
 	}
 
-	// 创建账户流水记录
-	domain.accountLog = AccountLog{}
-	domain.accountLog.FromTransferDTO(&dto)
-	domain.createAccountLogNo()
 	err = base.ExecuteContext(ctx, func(runner *dbx.TxRunner) error {
 		accountDao := AccountDao{runner: runner}
 		accountLogDao := AccountLogDao{runner: runner}
@@ -170,22 +166,27 @@ func (domain *accountDomain) TransferWithContextTx(ctx context.Context, dto serv
 			return errors.New("增加余额失败")
 		}
 
+		// 交易主体ChangeFlag是资金转出,则交易目标余额增加
+		if dto.ChangeFlag == services.FlagTransferOut {
+			rows, err = accountDao.UpdateBalance(dto.TradeTarget.AccountNo, amount.Abs())
+			if rows < 1 || err != nil {
+				status = services.TransferredStatusFailure
+				return errors.New("目标账户余额增加失败")
+			}
+		}
+
 		// 转账成功后 写入流水记录
 		account := accountDao.GetOne(dto.TradeBody.AccountNo)
 		if account == nil {
 			return errors.New("查询账户信息出错")
 		}
+
+		// 创建账户流水记录
+		domain.accountLog = AccountLog{}
+		domain.accountLog.FromTransferDTO(&dto)
+		domain.createAccountLogNo()
 		domain.account = *account
 		domain.accountLog.Balance = domain.account.Balance
-
-		// 如果对于交易主体来说，ChangeFlag是资金转出, 则交易目标余额增加
-		//if dto.ChangeFlag == services.FlagTransferOut {
-		//	rows, err = accountDao.UpdateBalance(dto.TradeTarget.AccountNo, amount.Abs())
-		//	if rows < 1 || err != nil {
-		//		status = services.TransferredStatusFailure
-		//		return errors.New("目标账户余额增加失败")
-		//	}
-		//}
 
 		id, err := accountLogDao.Insert(&domain.accountLog)
 		if err != nil || id <= 0 {
