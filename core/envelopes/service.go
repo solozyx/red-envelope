@@ -5,7 +5,6 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/shopspring/decimal"
 	"github.com/sirupsen/logrus"
 
 	"github.com/solozyx/red-envelope/infra/base"
@@ -42,7 +41,8 @@ func (s *redEnvelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (*servi
 
 	if goods.EnvelopeType == int(services.GeneralEnvelopeType) {
 		goods.AmountOne = goods.Amount
-		goods.Amount = decimal.Decimal{}
+		// goods.Amount = decimal.Decimal{}
+		goods.Amount = "0.00"
 	}
 
 	// 执行发红包的逻辑

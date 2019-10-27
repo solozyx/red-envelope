@@ -55,10 +55,10 @@ func (domain *goodsDomain) SendOut(dto services.RedEnvelopeGoodsDTO) (activity *
 		// 出账 dto
 		transfer := services.AccountTransferDTO{
 			// 红包id作为交易流水号 红包模块 和 资金模块 桥梁
-			TradeNo:     domain.EnvelopeNo,
+			TradeNo:     domain.RedEnvelopeGoods.EnvelopeNo,
 			TradeBody:   body,
 			TradeTarget: target,
-			Amount:      domain.Amount,
+			Amount:      domain.RedEnvelopeGoods.Amount,
 			ChangeType:  services.EnvelopeOutgoing,
 			ChangeFlag:  services.FlagTransferOut,
 			Desc:        "发红包人红包金额支付",
@@ -71,19 +71,19 @@ func (domain *goodsDomain) SendOut(dto services.RedEnvelopeGoodsDTO) (activity *
 		// 3.将扣减红包发送人的红包总金额 转入 红包中间商的红包资金账户
 		// 入账 dto
 		// TODO ???
-		transfer = services.AccountTransferDTO{
-			TradeNo:     domain.EnvelopeNo,
-			TradeBody:   target,
-			TradeTarget: body,
-			Amount:      domain.Amount,
-			ChangeType:  services.EnvelopeIncoming,
-			ChangeFlag:  services.FlagTransferIn,
-			Desc:        "红包金额转入",
-		}
-		status, err = accountDomain.TransferWithContextTx(ctx, transfer)
-		if status != services.TransferredStatusSuccess {
-			return err
-		}
+		// transfer = services.AccountTransferDTO{
+		//	TradeNo:     domain.EnvelopeNo,
+		//	TradeBody:   target,
+		//	TradeTarget: body,
+		//	Amount:      domain.Amount,
+		//	ChangeType:  services.EnvelopeIncoming,
+		//	ChangeFlag:  services.FlagTransferIn,
+		//	Desc:        "红包金额转入",
+		//}
+		//status, err = accountDomain.TransferWithContextTx(ctx, transfer)
+		//if status != services.TransferredStatusSuccess {
+		//	return err
+		//}
 		return nil
 	})
 

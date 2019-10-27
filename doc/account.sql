@@ -21,7 +21,7 @@ CREATE TABLE `account`
 )engine = InnoDB AUTO_INCREMENT=171 DEFAULT charset=utf8 ROW_FORMAT=DYNAMIC;
 
 INSERT INTO `account` (account_no, account_name, account_type, user_id, username, status)
-    values ('10000020190101010000000000000001','系统红包账户',1,'10001','系统红包账户',1);
+    values ('10000020190101010000000000000001','系统红包账户',2,'000000000000000000000000001','系统红包账户',1);
 
 -- ----------------------------
 -- Table structure for account_log

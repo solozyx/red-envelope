@@ -32,11 +32,16 @@ func (domain *goodsDomain) Create(dto services.RedEnvelopeGoodsDTO) {
 	// 红包商品创建 remain_amount = amount remain_quantity = quantity
 	domain.RemainQuantity = domain.Quantity
 	if domain.EnvelopeType == int(services.GeneralEnvelopeType) {
-		// amountOne * quantity
-		domain.Amount = dto.AmountOne.Mul(decimal.NewFromFloat(float64(dto.Quantity)))
+		// 普通红包总金额 = 用户输入金额是单个红包金额amountOne * quantity
+		// domain.Amount = dto.AmountOne.Mul(decimal.NewFromFloat(float64(dto.Quantity)))
+		amountOne, _ := decimal.NewFromString(dto.AmountOne)
+		domain.RedEnvelopeGoods.AmountOne = amountOne
+		domain.RedEnvelopeGoods.Amount = amountOne.Mul(decimal.NewFromFloat(float64(dto.Quantity)))
 	}
 	if domain.EnvelopeType == int(services.LuckyEnvelopeType) {
-		domain.AmountOne = decimal.NewFromFloat(0)
+		// 碰运气红包 用户输入的红包金额 = 红包总金额
+		domain.RedEnvelopeGoods.AmountOne = decimal.NewFromFloat(0)
+		domain.RedEnvelopeGoods.Amount, _ = decimal.NewFromString(dto.Amount)
 	}
 	domain.RemainAmount = domain.Amount
 	// 过期时间 默认24hour

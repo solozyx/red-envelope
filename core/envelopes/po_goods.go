@@ -33,13 +33,15 @@ type RedEnvelopeGoods struct {
 
 func (po *RedEnvelopeGoods) ToDTO() *services.RedEnvelopeGoodsDTO {
 	return &services.RedEnvelopeGoodsDTO{
-		EnvelopeNo:       po.EnvelopeNo,
-		EnvelopeType:     po.EnvelopeType,
-		Username:         po.Username.String,
-		UserId:           po.UserId,
-		Blessing:         po.Blessing.String,
-		Amount:           po.Amount,
-		AmountOne:        po.AmountOne,
+		EnvelopeNo:   po.EnvelopeNo,
+		EnvelopeType: po.EnvelopeType,
+		Username:     po.Username.String,
+		UserId:       po.UserId,
+		Blessing:     po.Blessing.String,
+		// Amount:           po.Amount.,
+		Amount: po.Amount.String(),
+		// AmountOne:        po.AmountOne,
+		AmountOne:        po.AmountOne.String(),
 		Quantity:         po.Quantity,
 		RemainAmount:     po.RemainAmount,
 		RemainQuantity:   po.RemainQuantity,
@@ -65,8 +67,10 @@ func (po *RedEnvelopeGoods) FromDTO(dto *services.RedEnvelopeGoodsDTO) {
 		String: dto.Blessing,
 		Valid:  true,
 	}
-	po.Amount = dto.Amount
-	po.AmountOne = dto.AmountOne
+	// po.Amount = dto.Amount
+	po.Amount, _ = decimal.NewFromString(dto.Amount)
+	// po.AmountOne = dto.AmountOne
+	po.AmountOne, _ = decimal.NewFromString(dto.AmountOne)
 	po.Quantity = dto.Quantity
 	po.RemainAmount = dto.RemainAmount
 	po.RemainQuantity = dto.RemainQuantity

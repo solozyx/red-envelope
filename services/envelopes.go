@@ -39,8 +39,9 @@ type RedEnvelopeSendingDTO struct {
 	UserId       string `json:"userId" validate:"required"`
 	Blessing     string `json:"blessing"`
 	// 根据红包类型 EnvelopeType 区分 普通红包指单个红包金额 碰运气红包指红包总金额
-	Amount   decimal.Decimal `json:"amount" validate:"required,numeric"`
-	Quantity int             `json:"quantity" validate:"required,numeric"`
+	// Amount   decimal.Decimal `json:"amount" validate:"required,numeric"`
+	Amount   string `json:"amount" validate:"required"`
+	Quantity int    `json:"quantity" validate:"required,numeric"`
 }
 
 func (dto *RedEnvelopeSendingDTO) ToGoods() *RedEnvelopeGoodsDTO {
@@ -92,13 +93,15 @@ func (this *RedEnvelopeActivity) CopyTo(target *RedEnvelopeActivity) {
 
 // 红包商品
 type RedEnvelopeGoodsDTO struct {
-	EnvelopeNo     string          `json:"envelopeNo"`
-	EnvelopeType   int             `json:"envelopeType" validate:"required,numeric"`
-	Username       string          `json:"username" validate:"required"`
-	UserId         string          `json:"userId" validate:"required"`
-	Blessing       string          `json:"blessing"`
-	Amount         decimal.Decimal `json:"amount" validate:"required,numeric"`
-	AmountOne      decimal.Decimal `json:"amountOne"`
+	EnvelopeNo   string `json:"envelopeNo"`
+	EnvelopeType int    `json:"envelopeType" validate:"required,numeric"`
+	Username     string `json:"username" validate:"required"`
+	UserId       string `json:"userId" validate:"required"`
+	Blessing     string `json:"blessing"`
+	// Amount         decimal.Decimal `json:"amount" validate:"required,numeric"`
+	Amount string `json:"amount" validate:"required"`
+	// AmountOne      decimal.Decimal `json:"amountOne"`
+	AmountOne      string          `json:"amountOne"`
 	Quantity       int             `json:"quantity" validate:"required,numeric"`
 	RemainAmount   decimal.Decimal `json:"remainAmount"`
 	RemainQuantity int             `json:"remainQuantity"`
