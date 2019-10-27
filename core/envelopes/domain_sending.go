@@ -68,22 +68,6 @@ func (domain *goodsDomain) SendOut(dto services.RedEnvelopeGoodsDTO) (activity *
 		if status != services.TransferredStatusSuccess {
 			return err
 		}
-		// 3.将扣减红包发送人的红包总金额 转入 红包中间商的红包资金账户
-		// 入账 dto
-		// TODO ???
-		// transfer = services.AccountTransferDTO{
-		//	TradeNo:     domain.EnvelopeNo,
-		//	TradeBody:   target,
-		//	TradeTarget: body,
-		//	Amount:      domain.Amount,
-		//	ChangeType:  services.EnvelopeIncoming,
-		//	ChangeFlag:  services.FlagTransferIn,
-		//	Desc:        "红包金额转入",
-		//}
-		//status, err = accountDomain.TransferWithContextTx(ctx, transfer)
-		//if status != services.TransferredStatusSuccess {
-		//	return err
-		//}
 		return nil
 	})
 
